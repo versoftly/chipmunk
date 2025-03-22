@@ -26,10 +26,10 @@ Este proyecto combina dos funcionalidades principales:
 *   **Persistencia de Datos:**
     *   La ganancia ingresada, el acumulador y el ajuste del temporizador se guardan en `localStorage`.  Estos datos se cargan automáticamente al recargar la página.
 * **Generador de Paletas:**
-    * Generates multiple secuential palettes using RGBA colors.
-    * The colors changes every 3 seconds.
-    * The generation of colors goes first by combinations of the RGBA components, second by permutations of them, and at the end a loop of all the generated colors.
-    * Button to stop the color change and create a CSS file with the last generated palette of colors.
+    * Genera múltiples paletas secuenciales utilizando colores RGBA.
+    * Los colores cambian cada 3 segundos.
+    * La generación de colores se realiza primero mediante combinaciones de los componentes RGBA, luego mediante permutaciones de los mismos y, finalmente, mediante un ciclo que recorre todos los colores generados.
+    * Botón para detener el cambio de colores y crear un archivo CSS con la última paleta de colores generada.
 
 ## Estructura del Código
 
