@@ -6,7 +6,7 @@ Este proyecto combina dos funcionalidades principales:
 
 1.  **Calculadora de Ganancias:** Calcula y muestra un desglose de ganancias, comisiones, ahorros e inversiones basado en una ganancia ingresada por el usuario.  La entrada de la ganancia se solicita cada 3 horas mediante un cuadro de diálogo (`prompt`).
 2.  **Temporizador con Ajuste Manual:**  Un temporizador que realiza una cuenta regresiva en ciclos de 3 horas.  El usuario puede ajustar manualmente el tiempo usando botones.
-3. **Generador de Paleta de Colores:** Generates a new palette of colors and apply to the different tags of the document every 3 seconds.
+3. **Generador de Paleta de Colores:** Crea una nueva paleta de colores y la aplica a las distintas etiquetas del documento cada 3 segundos.
 
 ## Características
 
