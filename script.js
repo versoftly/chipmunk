@@ -390,3 +390,111 @@ stopButton.disabled = true;//Deshabilita el boton de stop por defecto.
 
 // Inicializa los múltiples generadores de color al cargar la página
 initializeGenerators();
+
+//Game data manager
+
+let games = JSON.parse(localStorage.getItem('games')) || [];
+
+        function saveGames() {
+            localStorage.setItem('games', JSON.stringify(games));
+        }
+
+        function addGame() {
+            const name = document.getElementById('gameName').value;
+            const levels = parseInt(document.getElementById('gameLevels').value);
+            const coins = parseInt(document.getElementById('loyaltyCoins').value);
+            const cash = parseInt(document.getElementById('gameCash').value);
+
+            if (name && !isNaN(levels) && !isNaN(coins) && !isNaN(cash)) {
+                const game = {
+                    id: Date.now(),
+                    nombre: name,
+                    niveles: levels,
+                    monedas: coins,
+                    efectivo: cash
+                };
+
+                games.push(game);
+                saveGames();
+                displayGames();
+                clearForm();
+            } else {
+                alert('Por favor, complete todos los campos correctamente.');
+            }
+        }
+
+        function displayGames() {
+            const gameList = document.getElementById('gameList');
+            gameList.innerHTML = '';
+
+            games.forEach(game => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${game.nombre}</td>
+                    <td>${game.niveles}</td>
+                    <td>${game.monedas}</td>
+                    <td>${game.efectivo}</td>
+                    <td>
+                        <button onclick="editGame(${game.id})">Editar</button>
+                        <button onclick="deleteGame(${game.id})">Eliminar</button>
+                    </td>
+                `;
+                gameList.appendChild(row);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('gameName').value = '';
+            document.getElementById('gameLevels').value = '';
+            document.getElementById('loyaltyCoins').value = '';
+            document.getElementById('gameCash').value = '';
+        }
+
+        function editGame(id) {
+            const gameToEdit = games.find(game => game.id === id);
+
+            if (gameToEdit) {
+                document.getElementById('gameName').value = gameToEdit.nombre;
+                document.getElementById('gameLevels').value = gameToEdit.niveles;
+                document.getElementById('loyaltyCoins').value = gameToEdit.monedas;
+                document.getElementById('gameCash').value = gameToEdit.efectivo;
+
+                const addButton = document.querySelector('#gameForm button');
+                addButton.textContent = 'Actualizar Juego';
+                addButton.onclick = function() { updateGame(id); };
+            }
+        }
+
+        function updateGame(id) {
+            const name = document.getElementById('gameName').value;
+            const levels = parseInt(document.getElementById('gameLevels').value);
+            const coins = parseInt(document.getElementById('loyaltyCoins').value);
+            const cash = parseInt(document.getElementById('gameCash').value);
+
+            if (name && !isNaN(levels) && !isNaN(coins) && !isNaN(cash)) {
+                const gameIndex = games.findIndex(game => game.id === id);
+                if (gameIndex !== -1) {
+                    games[gameIndex].nombre = name;
+                    games[gameIndex].niveles = levels;
+                    games[gameIndex].monedas = coins;
+                    games[gameIndex].efectivo = cash;
+                    saveGames();
+                    displayGames();
+                    clearForm();
+
+                    const addButton = document.querySelector('#gameForm button');
+                    addButton.textContent = 'Agregar Juego';
+                    addButton.onclick = addGame;
+                }
+            } else {
+                alert('Por favor, complete todos los campos correctamente.');
+            }
+        }
+
+        function deleteGame(id) {
+            games = games.filter(game => game.id !== id);
+            saveGames();
+            displayGames();
+        }
+
+        displayGames();

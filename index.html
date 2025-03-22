@@ -44,6 +44,38 @@
         </ul>
     </main>
 
+    <h2>Game Data Manager</h2>
+
+    <div id="gameForm">
+        <label for="gameName">Nombre:</label>
+        <input type="text" id="gameName"><br><br>
+
+        <label for="gameLevels">Niveles:</label>
+        <input type="number" id="gameLevels"><br><br>
+
+        <label for="loyaltyCoins">Monedas:</label>
+        <input type="number" id="loyaltyCoins"><br><br>
+
+        <label for="gameCash">Efectivo:</label>
+        <input type="number" id="gameCash"><br><br>
+
+        <button onclick="addGame()">Agregar Juego</button>
+    </div>
+
+    <table id="gameTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Niveles</th>
+                <th>Monedas</th>
+                <th>Efectivo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="gameList">
+        </tbody>
+    </table>
+
     <footer>
         &copy;Ramiro Garc&iacute;a Gonz&aacute;lez - Todos Los Derechos Reservados 2025.
     </footer>
