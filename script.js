@@ -390,3 +390,97 @@ stopButton.disabled = true;//Deshabilita el boton de stop por defecto.
 
 // Inicializa los múltiples generadores de color al cargar la página
 initializeGenerators();
+
+
+//Blog
+
+let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+function savePosts() {
+    localStorage.setItem('posts', JSON.stringify(posts));
+}
+
+function addPost() {
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+
+    if (title && content) {
+        const post = {
+            id: Date.now(),
+            title: title,
+            content: content
+        };
+
+        posts.push(post);
+        savePosts();
+        displayPosts();
+        clearForm();
+    } else {
+        alert('Please enter both title and content.');
+    }
+}
+
+function displayPosts() {
+    const blogPostsDiv = document.getElementById('blogPosts');
+    blogPostsDiv.innerHTML = '<h2>Blog Posts</h2>'; // Clear and re-add heading.
+
+    posts.forEach(post => {
+        const article = document.createElement('div');
+        article.classList.add('article');
+        article.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <button onclick="editPost(${post.id})">Edit</button>
+            <button onclick="deletePost(${post.id})">Delete</button>
+        `;
+        blogPostsDiv.appendChild(article);
+    });
+}
+
+function clearForm() {
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postContent').value = '';
+}
+
+function editPost(id) {
+    const postToEdit = posts.find(post => post.id === id);
+
+    if (postToEdit) {
+        document.getElementById('postTitle').value = postToEdit.title;
+        document.getElementById('postContent').value = postToEdit.content;
+
+        const addButton = document.querySelector('#blogForm button');
+        addButton.textContent = 'Update Post';
+        addButton.onclick = function() { updatePost(id); };
+    }
+}
+
+function updatePost(id) {
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+
+    if (title && content) {
+        const postIndex = posts.findIndex(post => post.id === id);
+        if (postIndex !== -1) {
+            posts[postIndex].title = title;
+            posts[postIndex].content = content;
+            savePosts();
+            displayPosts();
+            clearForm();
+
+            const addButton = document.querySelector('#blogForm button');
+            addButton.textContent = 'Add Post';
+            addButton.onclick = addPost;
+        }
+    } else {
+        alert('Please enter both title and content.');
+    }
+}
+
+function deletePost(id) {
+    posts = posts.filter(post => post.id !== id);
+    savePosts();
+    displayPosts();
+}
+
+displayPosts();
