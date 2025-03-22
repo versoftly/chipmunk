@@ -390,3 +390,94 @@ stopButton.disabled = true;//Deshabilita el boton de stop por defecto.
 
 // Inicializa los múltiples generadores de color al cargar la página
 initializeGenerators();
+
+// bug tracker
+
+let bugs = JSON.parse(localStorage.getItem('bugs')) || []; // Load bugs from local storage or initialize an empty array
+
+function saveBugs() {
+    localStorage.setItem('bugs', JSON.stringify(bugs));
+}
+
+function addBug() {
+    const title = document.getElementById('bugTitle').value;
+    const description = document.getElementById('bugDescription').value;
+
+    if (title && description) {
+        const bug = {
+            id: Date.now(),
+            title: title,
+            description: description
+        };
+
+        bugs.push(bug);
+        saveBugs(); // Save to local storage
+        displayBugs();
+        clearForm();
+    } else {
+        alert('Please enter both title and description.');
+    }
+}
+
+function displayBugs() {
+    const bugsList = document.getElementById('bugs');
+    bugsList.innerHTML = '';
+
+    bugs.forEach(bug => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <strong>${bug.title}</strong>: ${bug.description}
+            <button onclick="editBug(${bug.id})">Edit</button>
+            <button onclick="deleteBug(${bug.id})">Delete</button>
+        `;
+        bugsList.appendChild(listItem);
+    });
+}
+
+function clearForm() {
+    document.getElementById('bugTitle').value = '';
+    document.getElementById('bugDescription').value = '';
+}
+
+function editBug(id) {
+    const bugToEdit = bugs.find(bug => bug.id === id);
+
+    if (bugToEdit) {
+        document.getElementById('bugTitle').value = bugToEdit.title;
+        document.getElementById('bugDescription').value = bugToEdit.description;
+
+        const addButton = document.querySelector('#bugForm button');
+        addButton.textContent = 'Update Bug';
+        addButton.onclick = function() { updateBug(id); };
+    }
+}
+
+function updateBug(id) {
+    const title = document.getElementById('bugTitle').value;
+    const description = document.getElementById('bugDescription').value;
+
+    if (title && description) {
+        const bugIndex = bugs.findIndex(bug => bug.id === id);
+        if (bugIndex !== -1) {
+            bugs[bugIndex].title = title;
+            bugs[bugIndex].description = description;
+            saveBugs(); // Save to local storage
+            displayBugs();
+            clearForm();
+
+            const addButton = document.querySelector('#bugForm button');
+            addButton.textContent = 'Add Bug';
+            addButton.onclick = addBug;
+        }
+    } else {
+        alert('Please enter both title and description.');
+    }
+}
+
+function deleteBug(id) {
+    bugs = bugs.filter(bug => bug.id !== id);
+    saveBugs(); // Save to local storage
+    displayBugs();
+}
+
+displayBugs();
